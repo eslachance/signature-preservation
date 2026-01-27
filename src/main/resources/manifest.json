@@ -1,0 +1,19 @@
+{
+    "Group": "com.tokebak",
+    "Name": "Signature Preservation",
+    "Version": "1.0.0",
+    "Main": "com.tokebak.SignaturePreservation.SignaturePreservation",
+    "IncludesAssetPack": false,
+    "Dependencies": {
+        
+    },
+    "Authors": [
+        
+    ],
+    "OptionalDependencies": {
+        
+    },
+    "LoadBefore": {
+        
+    }
+}
