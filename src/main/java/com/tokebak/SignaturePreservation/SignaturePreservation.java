@@ -28,6 +28,9 @@ public class SignaturePreservation extends JavaPlugin {
     protected void setup() {
         super.setup();
 
+        // Save config to disk (creates default config file if it doesn't exist)
+        this.config.save();
+
         final SignaturePreservationConfig cfg = (SignaturePreservationConfig) this.config.get();
 
         // Register the SignatureEnergy preservation system
