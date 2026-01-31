@@ -8,6 +8,7 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.entity.UUIDComponent;
 import com.hypixel.hytale.server.core.inventory.Inventory;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.inventory.container.ItemContainer;
@@ -108,12 +109,12 @@ public class SignatureEnergyPreservationSystem extends EntityTickingSystem<Entit
         
         // Get the entity reference
         final Ref<EntityStore> entityRef = archetypeChunk.getReferenceTo(index);
-        if (entityRef == null || !entityRef.isValid()) {
+        if (!entityRef.isValid()) {
             return;
         }
         
         // Get Player component
-        final Player player = (Player) archetypeChunk.getComponent(index, Player.getComponentType());
+        final Player player = archetypeChunk.getComponent(index, Player.getComponentType());
         if (player == null) {
             return;
         }
@@ -123,11 +124,14 @@ public class SignatureEnergyPreservationSystem extends EntityTickingSystem<Entit
             return;
         }
         
-        // Get player UUID for tracking
-        final UUID playerUuid = player.getUuid();
-        if (playerUuid == null) {
+        final UUIDComponent uuidComponent = store.getComponent(
+                entityRef,
+                UUIDComponent.getComponentType()
+        );
+        if (uuidComponent == null) {
             return;
         }
+        final UUID playerUuid = uuidComponent.getUuid();
         
         // Get current active slot
         final byte currentSlot = inventory.getActiveHotbarSlot();
@@ -269,7 +273,6 @@ public class SignatureEnergyPreservationSystem extends EntityTickingSystem<Entit
     /**
      * Get the current SignatureEnergy value for an entity.
      */
-    @SuppressWarnings("unchecked")
     private float getSignatureEnergy(
             @Nonnull final Ref<EntityStore> entityRef,
             @Nonnull final Store<EntityStore> store
@@ -279,8 +282,8 @@ public class SignatureEnergyPreservationSystem extends EntityTickingSystem<Entit
             return 0f;
         }
         
-        final EntityStatMap statMap = (EntityStatMap) store.getComponent(
-                (Ref) entityRef,
+        final EntityStatMap statMap = store.getComponent(
+                entityRef,
                 EntityStatMap.getComponentType()
         );
         
@@ -295,7 +298,6 @@ public class SignatureEnergyPreservationSystem extends EntityTickingSystem<Entit
     /**
      * Set the SignatureEnergy value for an entity.
      */
-    @SuppressWarnings("unchecked")
     private void setSignatureEnergy(
             @Nonnull final Ref<EntityStore> entityRef,
             @Nonnull final Store<EntityStore> store,
@@ -313,7 +315,7 @@ public class SignatureEnergyPreservationSystem extends EntityTickingSystem<Entit
         }
         
         final EntityStatMap statMap = (EntityStatMap) store.getComponent(
-                (Ref) entityRef,
+                entityRef,
                 EntityStatMap.getComponentType()
         );
         

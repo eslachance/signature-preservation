@@ -3,6 +3,7 @@ package com.tokebak.SignaturePreservation;
 import com.hypixel.hytale.component.system.ISystem;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.Config;
 
 import javax.annotation.Nonnull;
@@ -31,15 +32,15 @@ public class SignaturePreservation extends JavaPlugin {
         // Save config to disk (creates default config file if it doesn't exist)
         this.config.save();
 
-        final SignaturePreservationConfig cfg = (SignaturePreservationConfig) this.config.get();
+        final SignaturePreservationConfig cfg = this.config.get();
 
         // Register the SignatureEnergy preservation system
         final SignatureEnergyPreservationSystem system = new SignatureEnergyPreservationSystem(cfg);
-        this.getEntityStoreRegistry().registerSystem((ISystem) system);
+        this.getEntityStoreRegistry().registerSystem(system);
 
         System.out.println("[SP] ========================================");
         System.out.println("[SP] Signature Preservation mod loaded!");
-        System.out.println("[SP] Config: enabled=" + cfg.isEnabled() + ", debug=" + cfg.isDebug() + ", delayMs=" + cfg.getRestoreDelayMs());
+        System.out.println("[SP] Config: enabled=" + cfg.isEnabled() + ", debug=" + cfg.isDebug());
         System.out.println("[SP] ========================================");
     }
 }
